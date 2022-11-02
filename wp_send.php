@@ -30,11 +30,11 @@ require_once('mail-config.php');
 add_filter('pre_wp_mail', 'wp_mail_replacement', 10, 2);
 
 function wp_mail_replacement($null, $atts){
-    wp_mail_smtp_replacement($atts['subject'], $atts['message']);
+    wp_mail_smtp_replacement($atts['to'], $atts['subject'], $atts['message']);
     return true;
 }
 
-function wp_mail_smtp_replacement($subject, $body){
+function wp_mail_smtp_replacement($to, $subject, $body){
 
     $mail = new PHPMailer(true);
 
@@ -51,7 +51,7 @@ function wp_mail_smtp_replacement($subject, $body){
     
         //Recipients
         $mail->setFrom(P1180_MAIL_FROM);
-        $mail->addAddress(P1180_MAIL_TO);
+        $mail->addAddress($to);
         $mail->addReplyTo(P1180_MAIL_FROM, 'P1180');    
     
         //Content
